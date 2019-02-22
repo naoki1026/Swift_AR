@@ -20,14 +20,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the view's delegate
         sceneView.delegate = self
         
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+        //ここでの１は空間で文字を上から見たときの深さを示す
+        let text = SCNText(string: "荒川直樹", extrusionDepth: 10)
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        //ここで初期化
+        let material = SCNMaterial()
         
-        // Set the scene to the view
-        sceneView.scene = scene
+        //テキストの色を定義する
+        material.diffuse.contents = UIColor.green
+        
+        //textが持っているSCNTextクラスのプロパティである
+        text.materials = [material]
+        
+        
+        //文字の位置を定義
+        let node = SCNNode()
+        node.position = SCNVector3(0, 0.2, -0.2)
+        node.scale = SCNVector3(0.01, 0.01, 0.01)
+        node.geometry = text
+        
+        //ARがうつるところのこと
+        sceneView.scene.rootNode.addChildNode(node)
+        
+        //光沢ができる
+        sceneView.autoenablesDefaultLighting = true
+        
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
